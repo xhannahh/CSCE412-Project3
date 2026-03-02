@@ -168,17 +168,28 @@ void BonusLoadBalancer::printSummary() const
     logBonus("BONUS LOAD BALANCER ROUTING SUMMARY");
     logBonus("========================================");
     int total = routedToProcessing + routedToStreaming;
+    int procActive = processing.getServerCount();
+    int streamActive = streaming.getServerCount();
+    int totalActive = procActive + streamActive;
+    int totalInactive = (processing.maxServers - procActive) +
+                        (streaming.maxServers - streamActive);
+    int remainingQueue = static_cast<int>(processing.getQueueSize() +
+                                          streaming.getQueueSize());
+    int rejected = processing.totalBlocked + streaming.totalBlocked;
+    logBonus("Simulation Status: Complete");
     logBonus("Total Routed: " + to_string(total) +
              " | Processing: " + to_string(routedToProcessing) +
              " | Streaming: " + to_string(routedToStreaming));
+    logBonus("Active Servers: " + to_string(totalActive) +
+             " | Inactive Servers: " + to_string(totalInactive));
+    logBonus("Remaining Requests in Queue: " + to_string(remainingQueue));
+    logBonus("Rejected/Discarded Requests: " + to_string(rejected));
     logBonus("\n--- PROCESSING LB ---");
-    int procActive = processing.getServerCount();
     int procInactive = processing.maxServers - procActive;
     logBonus("Active Servers:   " + to_string(procActive));
     logBonus("Inactive Servers: " + to_string(procInactive));
     logBonus(processing.summaryString());
     logBonus("--- STREAMING LB ---");
-    int streamActive = streaming.getServerCount();
     int streamInactive = streaming.maxServers - streamActive;
     logBonus("Active Servers:   " + to_string(streamActive));
     logBonus("Inactive Servers: " + to_string(streamInactive));

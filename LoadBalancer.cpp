@@ -353,13 +353,14 @@ string LoadBalancer::summaryString() const
     s += "\n========================================\n";
     s += "LOAD BALANCER SIMULATION SUMMARY\n";
     s += "========================================\n\n";
+    s += "Simulation Status:    Complete\n";
     s += "Simulation Time:      " + to_string(systemTime) + " cycles\n";
-    s += "Final Active Servers: " + to_string(sc) + "\n";
+    s += "Active Servers:       " + to_string(sc) + "\n";
     s += "Inactive Servers:     " + to_string(maxServers - sc) + "\n\n";
     s += "--- Request Statistics ---\n";
-    s += "Processed: " + to_string(totalProcessed) +
-         " | Blocked: " + to_string(totalBlocked) +
-         " | Ending Queue: " + to_string(requestQueue.size()) + "\n\n";
+    s += "Processed Requests:          " + to_string(totalProcessed) + "\n";
+    s += "Rejected/Discarded Requests: " + to_string(totalBlocked) + "\n";
+    s += "Remaining Requests in Queue: " + to_string(requestQueue.size()) + "\n\n";
     s += "--- Scaling Statistics ---\n";
     s += "Scaling Events: " + to_string(totalScaled) +
          " | Servers: " + to_string(minServers) + "-" + to_string(maxServers) + "\n";
