@@ -14,6 +14,28 @@
 #include <map>
 
 /**
+ * @brief Prompts for an integer and falls back to default on blank/invalid input.
+ * @param prompt Text shown to the user.
+ * @param defaultValue Value used when input is blank or invalid.
+ * @return The parsed integer or defaultValue.
+ */
+static int promptIntOrDefault(const std::string &prompt, int defaultValue)
+{
+    std::cout << prompt;
+    std::string line;
+    if (!std::getline(std::cin, line) || line.empty())
+        return defaultValue;
+    try
+    {
+        return std::stoi(line);
+    }
+    catch (...)
+    {
+        return defaultValue;
+    }
+}
+
+/**
  * @brief Reads an integer value from the config file for a given key.
  * @param path Config file path.
  * @param key The key to look up.
@@ -67,16 +89,37 @@ int main(int argc, char *argv[])
     }
     int minS = cfgInt(cfg, "min_servers", 2);
     int maxS = cfgInt(cfg, "max_servers", 10);
-    int initS = cfgInt(cfg, "initial_servers", 10);
-    int cycles = cfgInt(cfg, "total_cycles", 10000);
+    int defaultInitS = cfgInt(cfg, "initial_servers", maxS);
+    int defaultCycles = cfgInt(cfg, "total_cycles", 10000);
     int qMult = cfgInt(cfg, "initial_queue_multiplier", 100);
     std::cout << "\n================================================\n"
               << "LOAD BALANCER SYSTEM STARTUP\n"
-              << "================================================\n"
+              << "================================================\n";
+    int initS = promptIntOrDefault(
+        "Enter the number of servers (" + std::to_string(minS) + "-" +
+            std::to_string(maxS) + ") [default " + std::to_string(defaultInitS) + "]: ",
+        defaultInitS);
+    if (initS < minS)
+        initS = minS;
+    if (initS > maxS)
+        initS = maxS;
+
+    int cycles = promptIntOrDefault(
+        "Enter the simulation time (clock cycles) [default " +
+            std::to_string(defaultCycles) + "]: ",
+        defaultCycles);
+    if (cycles <= 0)
+        cycles = defaultCycles;
+
+    if (qMult <= 0)
+        qMult = 100;
+
+    std::cout << "================================================\n"
               << "Config: " << cfg
               << " | Servers: " << initS << " (" << minS << "-" << maxS << ")"
               << " | Cycles: " << cycles
-              << " | Queue x" << qMult << "\n"
+              << " | Queue: " << initS << " x " << qMult
+              << " = " << initS * qMult << " requests\n"
               << "================================================\n\n";
     if (mode & 1)
     {
