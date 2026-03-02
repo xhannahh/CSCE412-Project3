@@ -1,0 +1,32 @@
+# Doxyfile configuration for Load Balancer Project
+
+# Project info
+PROJECT_NAME           = "Load Balancer Simulation"
+PROJECT_BRIEF          = "CSCE 412 - Project 3: Load Balancer Simulation"
+PROJECT_NUMBER         = "1.0"
+
+# Input settings
+INPUT                  = .
+FILE_PATTERNS          = *.cpp *.h
+RECURSIVE              = NO
+
+# Output settings - HTML only
+GENERATE_HTML          = YES
+HTML_OUTPUT            = docs
+GENERATE_LATEX         = NO
+
+# Extraction settings
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+# Source browsing
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+
+# Graph settings (set to NO if you don't have Graphviz installed)
+HAVE_DOT               = NO
+
+# Miscellaneous
+OPTIMIZE_OUTPUT_FOR_C  = NO
+QUIET                  = NO
