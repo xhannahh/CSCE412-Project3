@@ -59,10 +59,6 @@ namespace
     }
 }
 
-// ----------------------------------------------------------------
-// Construction / destruction
-// ----------------------------------------------------------------
-
 /**
  * @brief Constructs a LoadBalancer with min/max server limits and default config.
  * @param minS Minimum number of servers.
