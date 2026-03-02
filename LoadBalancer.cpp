@@ -322,7 +322,6 @@ void LoadBalancer::runSimulation(int cycles, int queueMultiplier)
     log("Total Cycles: " + to_string(cycles) +
         " | Initial Servers: " + to_string(servers.size()));
     log("----------------------------------------");
-
     if (queueMultiplier > 0)
     {
         const int target = static_cast<int>(servers.size()) * queueMultiplier;
@@ -355,7 +354,8 @@ string LoadBalancer::summaryString() const
     s += "LOAD BALANCER SIMULATION SUMMARY\n";
     s += "========================================\n\n";
     s += "Simulation Time:      " + to_string(systemTime) + " cycles\n";
-    s += "Final Active Servers: " + to_string(sc) + "\n\n";
+    s += "Final Active Servers: " + to_string(sc) + "\n";
+    s += "Inactive Servers:     " + to_string(maxServers - sc) + "\n\n";
     s += "--- Request Statistics ---\n";
     s += "Processed: " + to_string(totalProcessed) +
          " | Blocked: " + to_string(totalBlocked) +
