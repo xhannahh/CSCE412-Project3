@@ -359,7 +359,7 @@ string LoadBalancer::summaryString() const
     s += "--- Request Statistics ---\n";
     s += "Processed: " + to_string(totalProcessed) +
          " | Blocked: " + to_string(totalBlocked) +
-         " | Remaining Queue: " + to_string(requestQueue.size()) + "\n\n";
+         " | Ending Queue: " + to_string(requestQueue.size()) + "\n\n";
     s += "--- Scaling Statistics ---\n";
     s += "Scaling Events: " + to_string(totalScaled) +
          " | Servers: " + to_string(minServers) + "-" + to_string(maxServers) + "\n";
