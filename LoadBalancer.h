@@ -82,12 +82,6 @@ public:
     void initializeServers(int count);
 
     /**
-     * @brief Fills the queue with servers * multiplier initial requests.
-     * @param multiplier Number of requests per server to prefill.
-     */
-    void primeInitialQueue(int multiplier);
-
-    /**
      * @brief Generates a random Request with random IPs, time, and job type.
      * @return A randomly generated Request.
      */
@@ -129,8 +123,9 @@ public:
     /**
      * @brief Runs the full simulation for the given number of clock cycles.
      * @param cycles Number of clock cycles to simulate.
+     * @param queueMultiplier Requests per server to prefill (0 to skip).
      */
-    void runSimulation(int cycles);
+    void runSimulation(int cycles, int queueMultiplier = 0);
 
     /**
      * @brief Returns a formatted summary string of simulation statistics.

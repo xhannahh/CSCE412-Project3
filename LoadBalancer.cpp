@@ -176,26 +176,6 @@ void LoadBalancer::initializeServers(int count)
 }
 
 /**
- * @brief Fills the queue with servers * multiplier initial requests.
- * @param multiplier Number of requests per server to prefill.
- */
-void LoadBalancer::primeInitialQueue(int multiplier)
-{
-    if (multiplier <= 0 || servers.empty())
-        return;
-    const int target = static_cast<int>(servers.size()) * multiplier;
-    const int maxAttempts = target * 20;
-    int attempts = 0;
-    while (static_cast<int>(requestQueue.size()) < target && attempts < maxAttempts)
-    {
-        enqueueIfAllowed(createRandomRequest());
-        attempts++;
-    }
-    log("Primed queue to " + to_string(requestQueue.size()) +
-        " requests (target: " + to_string(target) + ").");
-}
-
-/**
  * @brief Generates a random Request with random IPs, time, and job type.
  * @return A randomly generated Request.
  */
@@ -332,8 +312,9 @@ bool LoadBalancer::enqueueIfAllowed(const Request &r)
 /**
  * @brief Runs the full simulation for the given number of clock cycles.
  * @param cycles Number of clock cycles to simulate.
+ * @param queueMultiplier Requests per server to prefill.
  */
-void LoadBalancer::runSimulation(int cycles)
+void LoadBalancer::runSimulation(int cycles, int queueMultiplier)
 {
     log("\n========================================");
     log("LOAD BALANCER SIMULATION STARTED");
@@ -341,6 +322,14 @@ void LoadBalancer::runSimulation(int cycles)
     log("Total Cycles: " + to_string(cycles) +
         " | Initial Servers: " + to_string(servers.size()));
     log("----------------------------------------");
+
+    if (queueMultiplier > 0)
+    {
+        const int target = static_cast<int>(servers.size()) * queueMultiplier;
+        for (int i = 0; i < target; i++)
+            requestQueue.push(createRandomRequest());
+        log("Initial queue: " + to_string(requestQueue.size()) + " requests.");
+    }
     for (int i = 0; i < cycles; i++)
     {
         processCycle();
