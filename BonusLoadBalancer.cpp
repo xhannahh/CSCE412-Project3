@@ -109,6 +109,10 @@ void BonusLoadBalancer::runSimulation(int cycles)
         return;
     }
 
+    // Disable internal request generation so all requests flow through the bonus router
+    processing.maxNewRequests = 0;
+    streaming.maxNewRequests = 0;
+
     int pRouted = 0, sRouted = 0, pBlocked = 0, sBlocked = 0;
     for (int i = 0; i < cycles; ++i)
     {
